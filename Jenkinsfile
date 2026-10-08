@@ -2,16 +2,35 @@ pipeline {
 
     agent any
 
+    tools {
+        maven 'Maven-3.9'
+    }
+
+    environment {
+        APP_NAME = 'quickcart-order-service'
+    }
+
     stages {
 
-        stage('Checkout Verification') {
+        stage('Build') {
 
             steps {
 
-                echo 'Source code successfully loaded from SCM'
+                echo "Building ${APP_NAME}"
 
-                echo "Workspace: ${env.WORKSPACE}"
+                sh 'mvn clean compile'
             }
+        }
+    }
+
+    post {
+
+        success {
+            echo 'QuickCart Maven build successful'
+        }
+
+        failure {
+            echo 'QuickCart Maven build failed'
         }
     }
 }
